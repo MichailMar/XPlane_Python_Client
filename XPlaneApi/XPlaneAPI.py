@@ -15,11 +15,8 @@ class XPlaneClient:
         self.ip = ip
         self.topic = topic
 
-        publisher_port = pub_port
-        subscriber_port = sub_port
-
-        self.subscription_port = subscriber_port
-        self.publication_port = publisher_port
+        self.subscription_port = sub_port
+        self.publication_port = pub_port
 
         self.sleep_time = 1.5
         
@@ -122,8 +119,7 @@ class XPlaneClient:
             bool: True of successfully sent, false otherwise.
         """
         self.publisher.send_multipart([bytes(self.topic, 'utf-8'), b"set", bytes(dref, 'utf-8'), bytes(value, 'utf-8')])
-        response = self.subscriber.recv_multipart()
-        response_message = response[1].decode("utf-8")
+        response_message = self.subscriber.recv_multipart()[1].decode("utf-8")
         
         if verbose:
             print(response_message)
@@ -143,8 +139,7 @@ class XPlaneClient:
             bool: True of successfully sent, false otherwise.
         """
         self.publisher.send_multipart([bytes(self.topic, 'utf-8'), b"terminate", b"0", b"0"])
-        response = self.subscriber.recv_multipart()
-        response_message = response[1].decode("utf-8")
+        response_message = self.subscriber.recv_multipart()[1].decode("utf-8")
         
         if verbose:
             print(response_message)
